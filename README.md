@@ -75,6 +75,75 @@ rename_images_in_folder(folder_path)
 
 This function can be customized for specific folder paths or integrated into larger scripts as needed.
 
----
+# Set up SSH Connection Between Linux and GitHub (Ubuntu) 
 
-Feel free to customize the documentation further based on your specific requirements or additional features in your script.
+Setting up an SSH connection between your Linux machine and GitHub involves generating an SSH key pair, adding the public key to your GitHub account, and configuring your local SSH agent. Here's a step-by-step guide:
+
+### Step 1: Check for Existing SSH Keys
+
+Before generating a new SSH key, check if you already have one:
+
+```bash
+ls -al ~/.ssh
+```
+
+Look for files named `id_rsa` (private key) and `id_rsa.pub` (public key). If they exist, you can use them. If not, proceed to the next step.
+
+### Step 2: Generate a New SSH Key
+
+Run the following command to generate a new SSH key pair:
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+Replace "your_email@example.com" with the email associated with your GitHub account. Press Enter to accept the default file location (`~/.ssh/id_rsa`) and enter a passphrase (optional).
+
+### Step 3: Add SSH Key to SSH Agent
+
+Run the following commands to add the SSH private key to the SSH agent:
+
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+```
+
+### Step 4: Add SSH Key to GitHub
+
+Copy the SSH public key to your clipboard:
+
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
+Go to your GitHub account -> Settings -> SSH and GPG keys -> New SSH Key, and paste the copied key.
+
+### Step 5: Test the Connection
+
+Run the following command to test the connection:
+
+```bash
+ssh -T git@github.com
+```
+
+You may see a message about authenticity. Type "yes" to confirm. If everything is set up correctly, you should see a message indicating a successful authentication.
+
+### Optional: Configuring SSH Hosts (if using multiple accounts)
+
+If you have multiple GitHub accounts, you can configure SSH hosts in your `~/.ssh/config` file. For example:
+
+```bash
+Host github.com
+   HostName github.com
+   User git
+   IdentityFile ~/.ssh/id_rsa
+
+Host github-other-account
+   HostName github.com
+   User git
+   IdentityFile ~/.ssh/id_rsa_other_account
+```
+
+Replace "other-account" and "id_rsa_other_account" with your specific account details.
+
+Now you should have a working SSH connection between your Linux machine and GitHub.
