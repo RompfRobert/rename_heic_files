@@ -1,7 +1,3 @@
-Certainly! Below is a simple documentation for the provided Python script:
-
----
-
 # Image Renaming Script Documentation
 
 ## Overview
